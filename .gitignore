@@ -1,0 +1,12 @@
+# Godot 4+ specific ignores
+.godot/
+# Local user's settings
+.tmp/
+.import/
+export_presets.cfg
+# Results of building
+build/
+dist/
+# Mobile presets & logs
+/android/
+*.log
