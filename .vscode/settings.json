@@ -1,0 +1,8 @@
+{
+    "godotTools.editorPath.godot4": "/home/itw20/Godot_v4.4-stable_linux.x86_64",
+    "markdown.copyFiles.destination": {
+        "/home/itw20/HSE/TDS/": "\\\\wsl.localhost\\Ubuntu\\home\\itw20\\HSE\\TDS\\"
+    },
+    "godotTools.lsp.serverPort": 6005,
+    "godotTools.lsp.serverHost": "172.22.224.1"
+}
