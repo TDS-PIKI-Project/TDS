@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="tds-godot"
+run/main_scene="uid://uw81chytmcvu"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://assets/sprites/icon.svg"
+
+[autoload]
+
+Globals="*res://scripts/autoloads/globals.gd"
 
 [rendering]
 
