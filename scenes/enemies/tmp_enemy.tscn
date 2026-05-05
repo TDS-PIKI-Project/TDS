@@ -13,8 +13,6 @@ radius = 85.9069
 y_sort_enabled = true
 collision_layer = 2
 script = ExtResource("1_ph245")
-push_force = 100.0
-velocity_lerp_speed = 0.5
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

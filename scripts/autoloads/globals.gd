@@ -1,7 +1,8 @@
 extends Node
 
 # --- CONSTANTS ---
-const LEVEL_1_PATH = "res://scenes/enemies/tmp_enemy.tscn"
+const LEVEL_1_PATH = "res://scenes/levels/level_1.tscn"
+const TMP_ENEMY_PATH = "res://scenes/enemies/tmp_enemy.tscn"
 const MENU_PATH = "res://scenes/ui/menu.tscn"
 
 # --- VARIABLES ---
