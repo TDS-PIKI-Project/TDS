@@ -76,9 +76,6 @@ func _physics_process(_delta):
 
 
 func take_damage(amount: int):
-	# Эту функцию будет вызывать пуля, которую мы писали раньше
-	# Но пока у нас нет переменной health в коде, давай добавим
-	# (хотя для теста можно просто сразу удалять)
 	queue_free() 
 
 func _on_detector_body_entered(body: Node2D) -> void:

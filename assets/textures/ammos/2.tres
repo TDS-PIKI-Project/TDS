@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://b5cttpmn8x6he"]
+
+[ext_resource type="Texture2D" uid="uid://cqce66o8k0b7w" path="res://assets/textures/guns_for_godot.png" id="1_w74ro"]
+
+[resource]
+atlas = ExtResource("1_w74ro")
+region = Rect2(187, 2, 3, 6)
