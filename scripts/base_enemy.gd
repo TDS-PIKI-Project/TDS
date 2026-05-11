@@ -18,6 +18,8 @@ var collision_shape: CollisionShape2D = null
 var detector_area: Area2D = null
 
 func _ready():
+	add_to_group("enemies")
+	
 	if has_node("CollisionShape2D"):
 		collision_shape = $CollisionShape2D
 	if has_node("DetectorArea"):
@@ -26,7 +28,6 @@ func _ready():
 			detector_area.body_entered.connect(_on_detector_body_entered)
 		if not detector_area.body_exited.is_connected(_on_detector_body_exited):
 			detector_area.body_exited.connect(_on_detector_body_exited)
-	add_to_group("enemies")
 	
 func get_physic_colision_size():
 	if collision_shape == null or collision_shape.shape == null:

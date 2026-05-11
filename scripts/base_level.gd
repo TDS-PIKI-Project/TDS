@@ -1,5 +1,4 @@
-extends Node2D
-class_name BaseLevel
+class_name BaseLevel extends Node2D
 
 @export var total_lanes: int = 15
 @export var buffer_size: int = 1
@@ -7,12 +6,19 @@ class_name BaseLevel
 @export var start_y: float = 250.0
 
 var enemy_scene: PackedScene = null
+var player_scene: PackedScene = null
+var player: Node2D = null
 var all_lanes = []
 var spawn_lanes = []
 
 func _ready():
 	setup_lanes()
 	setup_level()
+	
+	if player_scene != null:
+		player = player_scene.instantiate()
+		player.position = Vector2(150, 150)
+		add_child(player)
 	
 	var timer = Timer.new()
 	add_child(timer)
@@ -41,7 +47,8 @@ func spawn_enemy():
 		return
 	var enemy = enemy_scene.instantiate()
 	var start_lane = spawn_lanes.pick_random()	
-	var random_offset = randf_range(-5, 5)
+	# var random_offset = randf_range(-5, 5)
+	var random_offset = 0
 	
 	enemy.position = Vector2(1200, start_lane + random_offset)
 	enemy.all_lanes = all_lanes

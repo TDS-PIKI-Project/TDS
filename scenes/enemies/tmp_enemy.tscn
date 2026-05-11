@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dy4bh3j3rnm5t"]
+[gd_scene load_steps=6 format=3 uid="uid://dy4bh3j3rnm5t"]
 
 [ext_resource type="Script" uid="uid://dqoy7jnlrmnwh" path="res://scenes/enemies/tmp_enemy.gd" id="1_ph245"]
 [ext_resource type="Texture2D" uid="uid://c1qqmm0njbj16" path="res://assets/textures/icon.svg" id="2_n3a8i"]
@@ -9,11 +9,13 @@ size = Vector2(59, 16.5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_s7bn3"]
 radius = 85.9069
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ph245"]
+size = Vector2(59, 59)
+
 [node name="Tmp enemy" type="CharacterBody2D"]
 y_sort_enabled = true
 collision_layer = 2
 script = ExtResource("1_ph245")
-metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -30)
@@ -23,6 +25,7 @@ texture = ExtResource("2_n3a8i")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -8.75)
 shape = SubResource("RectangleShape2D_e6d4v")
+disabled = true
 
 [node name="DetectorArea" type="Area2D" parent="."]
 position = Vector2(0, -30)
@@ -33,6 +36,11 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorArea"]
 position = Vector2(0, 42)
 shape = SubResource("CircleShape2D_s7bn3")
+disabled = true
+
+[node name="Body" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -29.5)
+shape = SubResource("RectangleShape2D_ph245")
 
 [connection signal="body_entered" from="DetectorArea" to="." method="_on_detector_body_entered"]
 [connection signal="body_exited" from="DetectorArea" to="." method="_on_detector_body_exited"]

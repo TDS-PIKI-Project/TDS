@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cao1jm5lnpr3k"]
+
+[ext_resource type="Script" uid="uid://bks0j4rlf3ljn" path="res://scripts/weapons/base_weapon.gd" id="1_evrmh"]
+
+[node name="Weapon" type="Node2D"]
+z_index = 1
+script = ExtResource("1_evrmh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+light_mask = 15
+visibility_layer = 15
+scale = Vector2(3, 3)
+
+[node name="CooldownTimer" type="Timer" parent="."]

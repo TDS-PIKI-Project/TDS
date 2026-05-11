@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnsgjsv6aolno"]
+
+[ext_resource type="Script" uid="uid://b5w5g1i3nilv" path="res://scripts/weapons/base_bullet.gd" id="1_uda7o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uda7o"]
+
+[node name="Bullet" type="Area2D"]
+light_mask = 3
+visibility_layer = 3
+script = ExtResource("1_uda7o")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 15
+visibility_layer = 15
+shape = SubResource("CircleShape2D_uda7o")
