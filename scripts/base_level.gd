@@ -4,7 +4,9 @@ class_name BaseLevel extends Node2D
 @export var buffer_size: int = 1
 @export var lane_height: float = 10.0
 @export var start_y: float = 250.0
+@export var lane_random_offset: float = 20.0   # максимальное отклонение по Y
 
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var enemy_scene: PackedScene = null
 var player_scene: PackedScene = null
 var player: Node2D = null
@@ -17,7 +19,7 @@ func _ready():
 	
 	if player_scene != null:
 		player = player_scene.instantiate()
-		player.position = Vector2(150, 150)
+		player.position = Vector2(150, 300)
 		add_child(player)
 	
 	var timer = Timer.new()
@@ -41,18 +43,14 @@ func setup_lanes():
 func setup_level():
 	assert(false, "setup_level() must be overriden in the child class!")
 
-func spawn_enemy():
-	if enemy_scene == null:
-		print("Error: enemy_scene is null! Set it in the child script or Inspector.")
-		return
-	var enemy = enemy_scene.instantiate()
-	var start_lane = spawn_lanes.pick_random()	
-	# var random_offset = randf_range(-5, 5)
-	var random_offset = 0
-	
-	enemy.position = Vector2(1200, start_lane + random_offset)
-	enemy.all_lanes = all_lanes
-	enemy.target_lane_y = start_lane
-	enemy.lane_clamp_offset = lane_height
-	
+func spawn_enemy() -> void:
+	var enemy = enemy_scene.instantiate()  # одна сцена для всех типов
+	var lane_y: float = spawn_lanes.pick_random()
+	var offset: float = _rng.randf_range(-lane_random_offset, lane_random_offset)
+
+	# Случайный тип — enemy_type должен быть задан ДО add_child (до _ready)
+	enemy.enemy_type    = Globals.EnemyType.values().pick_random()
+	enemy.position      = Vector2(1200, lane_y + offset)
+	enemy.target_lane_y = lane_y
+
 	add_child(enemy)
