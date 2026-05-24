@@ -45,8 +45,6 @@ func get_physic_colision_size():
 
 func _physics_process(_delta):
 	var push_vector = Vector2.ZERO
-	#if not has_node("DetectorArea"):
-		#neighbours = get_tree().get_nodes_in_group("enemies")
 	var radius = get_physic_colision_size() * collision_radius_multiplier
 	
 	for other in neighbours:
@@ -61,6 +59,13 @@ func _physics_process(_delta):
 
 	var target_velocity = Vector2(-speed, 0) + push_vector * push_force
 	
+	var dynamic_wall_x : float = get_tower_wall_x() + 3
+	
+	if dynamic_wall_x > 0.0 and global_position.x <= dynamic_wall_x:
+		if target_velocity.x < 0:
+			target_velocity.x = 0
+		global_position.x = dynamic_wall_x
+	
 	if not all_lanes.is_empty():
 		for lane_y in all_lanes:
 			if abs(global_position.y - lane_y) < abs(global_position.y - target_lane_y):
@@ -71,9 +76,9 @@ func _physics_process(_delta):
 	velocity = velocity.lerp(target_velocity, velocity_lerp_speed)
 	move_and_slide()
 
-	if not all_lanes.is_empty():
-		global_position.y = clamp(global_position.y, all_lanes.min() - lane_clamp_offset,
-		all_lanes.max() + lane_clamp_offset)
+	#if not all_lanes.is_empty():
+		#global_position.y = clamp(global_position.y, all_lanes.min() - lane_clamp_offset,
+		#all_lanes.max() + lane_clamp_offset)
 
 
 func take_damage(amount: int):
@@ -87,3 +92,35 @@ func _on_detector_body_exited(body: Node2D) -> void:
 	if body != self and body.is_in_group("enemies"):
 		if body in neighbours:
 			neighbours.erase(body)
+
+func get_tower_wall_x() -> float:
+	var tower_manager = get_tree().get_first_node_in_group("tower_manager")
+	var player_node = get_tree().get_first_node_in_group("player")
+	
+	if player_node == null or not is_instance_valid(player_node):
+		return 0.0
+		
+	var enemy_half_width = get_physic_colision_size() / 2.0
+	
+	if tower_manager and not tower_manager.sections.is_empty():
+		if tower_manager.sections.size() > 1:
+			var section_block = tower_manager.sections[1]
+			if is_instance_valid(section_block):
+				var sprite = section_block.get_node_or_null("box")
+				if sprite and sprite.texture:
+					var half_width = (sprite.texture.get_width() * \
+					 sprite.scale.x * section_block.scale.x) / 2.0
+					return section_block.global_position.x + half_width + enemy_half_width
+		
+		if player_node != null and is_instance_valid(player_node):
+			var player_sprite = player_node.get_node_or_null("Sprite2D")
+			var p_half_width = 0.0
+			
+			if player_sprite and player_sprite.texture:
+				p_half_width = (player_sprite.texture.get_width() * \
+				 player_sprite.scale.x * player_node.scale.x) / 2.0
+			
+			return player_node.global_position.x + p_half_width + enemy_half_width
+			
+	assert(false, "How? check condidtions in get_tower_wall_x.")
+	return 0.0

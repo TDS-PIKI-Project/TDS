@@ -37,7 +37,7 @@ const HAND_WEAPONS = {
 		"cooldown_shot": 0.25,
 		"cooldown_reload": 0.7,
 		"ammo_max": 12,
-		"spread_angle": 3
+			"spread_angle": 3
 	},
 }
 

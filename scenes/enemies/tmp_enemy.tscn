@@ -4,10 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://c1qqmm0njbj16" path="res://assets/textures/icon.svg" id="2_n3a8i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e6d4v"]
-size = Vector2(59, 16.5)
+size = Vector2(59, 7.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s7bn3"]
-radius = 85.9069
+radius = 62.0322
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ph245"]
 size = Vector2(59, 59)
@@ -15,6 +15,7 @@ size = Vector2(59, 59)
 [node name="Tmp enemy" type="CharacterBody2D"]
 y_sort_enabled = true
 collision_layer = 2
+collision_mask = 129
 script = ExtResource("1_ph245")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -23,7 +24,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_n3a8i")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8.75)
+position = Vector2(0, -4.25)
 shape = SubResource("RectangleShape2D_e6d4v")
 
 [node name="DetectorArea" type="Area2D" parent="."]
@@ -33,7 +34,7 @@ collision_layer = 8
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorArea"]
-position = Vector2(0, 42)
+position = Vector2(0, 52)
 shape = SubResource("CircleShape2D_s7bn3")
 
 [node name="Body" type="CollisionShape2D" parent="."]

@@ -3,6 +3,8 @@ class_name BaseWeapon extends Node2D
 var weapon_data: Dictionary = {}
 var projectile_data: Dictionary = {}
 
+@export var rotation_speed: float = 5.0
+
 @onready var sprite = $Sprite2D
 @onready var cooldown_timer = $CooldownTimer
 
@@ -15,11 +17,44 @@ func setup(weapon_type: Globals.HandWeapons) -> void:
 	cooldown_timer.one_shot = true
 	cooldown_timer.autostart = false
 
+func _physics_process(delta: float) -> void:
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		var mouse_pos = get_global_mouse_position()
+		global_rotation = global_position.angle_to_point(mouse_pos)
+		
+		var shoot_direction = Vector2.RIGHT.rotated(global_rotation)
+		shoot(global_position, shoot_direction)
+		return
+	var target_enemy = get_closest_enemy()
+	var has_target: bool = false
+	
+	if target_enemy and is_instance_valid(target_enemy):
+		var angle_to_enemy = global_position.angle_to_point(target_enemy.global_position)
+		global_rotation = rotate_toward(global_rotation, angle_to_enemy, rotation_speed * delta)
+
+		var shoot_direction = Vector2.RIGHT.rotated(global_rotation)
+		shoot(global_position, shoot_direction)
+		
+func get_closest_enemy() -> Node2D:
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	if enemies.is_empty():
+		return null
+		
+	var closest_enemy: Node2D = null
+	var min_distance: float = INF
+	
+	for enemy in enemies:
+		if is_instance_valid(enemy):
+			var dist = global_position.distance_to(enemy.global_position)
+			if dist < min_distance:
+				min_distance = dist
+				closest_enemy = enemy
+	
+	return closest_enemy
+
 func shoot(origin: Vector2, direction: Vector2) -> void:
 	if not cooldown_timer.is_stopped():
 		return
-		
-	print("BANG!")
 	
 	cooldown_timer.start()
 	
