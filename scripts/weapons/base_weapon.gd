@@ -26,7 +26,6 @@ func _physics_process(delta: float) -> void:
 		shoot(global_position, shoot_direction)
 		return
 	var target_enemy = get_closest_enemy()
-	var has_target: bool = false
 	
 	if target_enemy and is_instance_valid(target_enemy):
 		var angle_to_enemy = global_position.angle_to_point(target_enemy.global_position)

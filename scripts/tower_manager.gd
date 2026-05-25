@@ -5,7 +5,7 @@ const TOWER_SECTION_PATH = "res://scenes/tower/TowerSection.tscn"
 
 var tower_root: Node2D = null
 var sections: Array = []
-var tower_speed: float = 50
+var tower_speed: float = 0
 var start_x: float = 200
 var start_y: float = 600
 var player: Player
@@ -116,8 +116,13 @@ func get_section_under_mouse() -> TowerSection:
 func _physics_process(_delta: float) -> void:
 	for section in sections:
 		if is_instance_valid(section):
-			if section.freeze:
-				section.global_position.x = start_x
-				if section is RigidBody2D:
-					section.linear_velocity.x = 0.0
-					section.angular_velocity = 0.0
+			section.global_position.x = start_x
+			if section is RigidBody2D:
+				section.linear_velocity.x = 0.0
+	#for section in sections:
+		#if is_instance_valid(section):
+			#if section.freeze:
+				#section.global_position.x = start_x
+				#if section is RigidBody2D:
+					#section.linear_velocity.x = 0.0
+					#section.angular_velocity = 0.0

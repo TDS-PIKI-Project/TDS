@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dy4bh3j3rnm5t"]
+[gd_scene load_steps=7 format=3 uid="uid://dy4bh3j3rnm5t"]
 
 [ext_resource type="Script" uid="uid://dqoy7jnlrmnwh" path="res://scenes/enemies/tmp_enemy.gd" id="1_ph245"]
 [ext_resource type="Texture2D" uid="uid://c1qqmm0njbj16" path="res://assets/textures/icon.svg" id="2_n3a8i"]
@@ -11,6 +11,9 @@ radius = 62.0322
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ph245"]
 size = Vector2(59, 59)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ph245"]
+radius = 36.0555
 
 [node name="Tmp enemy" type="CharacterBody2D"]
 y_sort_enabled = true
@@ -41,5 +44,8 @@ shape = SubResource("CircleShape2D_s7bn3")
 position = Vector2(0.5, -29.5)
 shape = SubResource("RectangleShape2D_ph245")
 
-[connection signal="body_entered" from="DetectorArea" to="." method="_on_detector_body_entered"]
-[connection signal="body_exited" from="DetectorArea" to="." method="_on_detector_body_exited"]
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(-34, -30)
+shape = SubResource("CircleShape2D_ph245")

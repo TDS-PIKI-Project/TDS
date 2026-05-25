@@ -1,7 +1,7 @@
 class_name TowerSection extends RigidBody2D
 
 signal destroyed(section: TowerSection)
-@export var health: int = 100
+@export var health: int = 1000
 
 func _ready():
 	#gravity_scale = 0.0
@@ -21,6 +21,9 @@ func get_height() -> float:
 
 func take_damage(amount: int) -> void:
 	health -= amount
+	
+	print("[tower_section] получает урон: %d | HP: %d / %d" % [amount, health, 1000])
+	
 	if health <= 0:
 		destroy()
 
