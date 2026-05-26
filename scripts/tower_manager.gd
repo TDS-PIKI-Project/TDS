@@ -1,11 +1,8 @@
 class_name TowerManager extends Node
 
-const TOWER_BASE_PATH = "res://scenes/tower/TowerBase.tscn"
-const TOWER_SECTION_PATH = "res://scenes/tower/TowerSection.tscn"
-
 var tower_root: Node2D = null
 var sections: Array = []
-var tower_speed: float = 0
+var tower_speed: float = 100
 var start_x: float = 200
 var start_y: float = 600
 var player: Player
@@ -16,14 +13,14 @@ func _ready() -> void:
 func build_tower(parent_node: Node2D, count: int = 3) -> void:
 	tower_root = parent_node
 	
-	var base_scene = preload(TOWER_BASE_PATH)
+	var base_scene = preload(Globals.TOWER_BASE_PATH)
 	var base = base_scene.instantiate()
 	base.position = Vector2(start_x, start_y)
 	parent_node.add_child(base)
 	sections.append(base)
 	var last_section = base
 
-	var section_scene = preload(TOWER_SECTION_PATH)
+	var section_scene = preload(Globals.TOWER_SECTION_PATH)
 	for i in range(count):
 		var section = section_scene.instantiate()
 		var y_pos = last_section.position.y - last_section.get_height()

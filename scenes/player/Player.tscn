@@ -1,13 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbrpv0ru5wva5"]
+[gd_scene load_steps=5 format=3 uid="uid://dbrpv0ru5wva5"]
 
 [ext_resource type="Script" uid="uid://dfv7p7e43o2sl" path="res://scenes/player/player.gd" id="1_gfjak"]
 [ext_resource type="Texture2D" uid="uid://dq8pd2oa8sx4w" path="res://assets/textures/hero.png" id="1_wr5hl"]
+[ext_resource type="PackedScene" uid="uid://cb78qepki3kcg" path="res://scenes/ui/bar/HealthBar.tscn" id="2_4kuee"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0rwas"]
 size = Vector2(128.246, 127.623)
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 67
+collision_mask = 67
 script = ExtResource("1_gfjak")
+
+[node name="HealthBar" parent="." instance=ExtResource("2_4kuee")]
+visible = false
+z_index = 2
+offset_left = -40.0
+offset_top = -46.0
+offset_right = 180.0
+offset_bottom = -18.0
+scale = Vector2(0.36, 0.325)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = 1

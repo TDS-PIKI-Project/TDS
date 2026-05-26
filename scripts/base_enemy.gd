@@ -147,7 +147,7 @@ func _physics_process(_delta: float) -> void:
 	
 	var dynamic_wall_x : float = get_tower_wall_x() + 3
 	
-	if dynamic_wall_x > 0.0 and global_position.x <= dynamic_wall_x:
+	if dynamic_wall_x > 3.0 and global_position.x <= dynamic_wall_x:
 		if target_velocity.x < 0:
 			target_velocity.x = 0
 		global_position.x = dynamic_wall_x
@@ -211,6 +211,8 @@ func take_damage(amount: int) -> void:
 		return
 	current_health -= amount
 	print("[%s] получает урон: %d | HP: %d / %d" % [name, amount, current_health, max_health])
+	$HealthBar.visible = true
+	$HealthBar.set_health_percent((float(current_health) / float(max_health)) * 100)
 	# Анимация hurt НЕ останавливает физику — просто воспроизводится поверх
 	_play_anim("hurt")
 	if current_health <= 0:
@@ -227,13 +229,15 @@ func _die() -> void:
 	if _anim_player != null and _anim_player.has_animation("death"):
 		await _anim_player.animation_finished
 	# Без анимации — удаляем сразу, без задержки
-	queue_free()
+	#queue_free()
 
 # ═══════════════════════════════════════════════════════════════════
 #  СИГНАЛЫ
 # ═══════════════════════════════════════════════════════════════════
 func _on_attack_area_body_entered(body: Node2D) -> void:
+	print(body)
 	if body.is_in_group("tower_section") or body.is_in_group("player"):
+		print("entered 2!")
 		if body not in _attack_targets:
 			_attack_targets.append(body)
 

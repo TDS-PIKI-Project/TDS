@@ -7,6 +7,12 @@ const PLAYER_PATH = "res://scenes/player/Player.tscn"
 const BULLET_PATH = "res://scenes/weapons/Bullet.tscn"
 const WEAPON_PATH = "res://scenes/weapons/Weapon.tscn"
 const ENEMY_PATH = "res://scenes/enemies/tmp_enemy.tscn"
+const TOWER_BASE_PATH = "res://scenes/tower/TowerBase.tscn"
+const TOWER_SECTION_PATH = "res://scenes/tower/TowerSection.tscn"
+const SCORE_PATH = "res://scenes/levels/score.tscn"
+const AUTH_PATH = "res://scenes/ui/authorization/Auth.tscn"
+const MAIN_MENU_PATH = "res://scenes/ui/menu/MainMenu.tscn"
+const LEADERBOARD_PATH = "res://scenes/ui/board/LeaderboardScene.tscn"
 
 enum HandWeapons {
 	PISTOL,
@@ -90,6 +96,7 @@ const ENEMIES = {
 		"cooldown_max":         1.4,
 		"scale_min":            0.80,
 		"scale_max":            0.95,
+		"score":                1,
 	},
 	EnemyType.MEDIUM: {
 		"mass":                 2.5,
@@ -109,6 +116,7 @@ const ENEMIES = {
 		"cooldown_max":         2.1,
 		"scale_min":            0.92,
 		"scale_max":            1.10,
+		"score":                3,
 	},
 	EnemyType.LARGE: {
 		"mass":                 5.0,
@@ -128,6 +136,7 @@ const ENEMIES = {
 		"cooldown_max":         3.5,
 		"scale_min":            1.28,
 		"scale_max":            1.55,
+		"score":                5,
 	},
 }
 

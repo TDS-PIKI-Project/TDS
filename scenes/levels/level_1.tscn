@@ -5,3 +5,8 @@
 [node name="Level 1" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_ksju7")
+total_lanes = null
+buffer_size = null
+lane_height = null
+start_y = null
+lane_random_offset = null

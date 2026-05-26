@@ -3,8 +3,8 @@ class_name Player extends CharacterBody2D
 # ═══════════════════════════════════════════════════════════════════
 #  ЗДОРОВЬЕ
 # ═══════════════════════════════════════════════════════════════════
-@export var max_health: int = 100
-var current_health: int
+@export var max_health: float = 10
+var cur_health: float = 10
 var _is_dead: bool = false
 
 # ═══════════════════════════════════════════════════════════════════
@@ -18,7 +18,6 @@ var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready() -> void:
 	add_to_group("player")
-	current_health = max_health
 
 	var weapon_scene = preload(Globals.WEAPON_PATH)
 	current_weapon = weapon_scene.instantiate()
@@ -47,11 +46,13 @@ func _input(event: InputEvent) -> void:
 func take_damage(amount: int) -> void:
 	if _is_dead:
 		return
+	
+	$HealthBar.set_health_percent(cur_health / max_health * 100)
+	$HealthBar.visible = true
+	cur_health -= amount
+	print("[Player] получает урон: %d | HP: %d / %d" % [amount, cur_health, max_health])
 
-	current_health -= amount
-	print("[Player] получает урон: %d | HP: %d / %d" % [amount, current_health, max_health])
-
-	if current_health <= 0:
+	if cur_health <= 0:
 		_die()
 
 func _die() -> void:
@@ -61,4 +62,4 @@ func _die() -> void:
 	set_process_input(false)
 	print("[Player] умер")
 
-	queue_free()
+	#queue_free()

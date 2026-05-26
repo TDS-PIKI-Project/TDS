@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dy4bh3j3rnm5t"]
+[gd_scene load_steps=8 format=3 uid="uid://dy4bh3j3rnm5t"]
 
 [ext_resource type="Script" uid="uid://dqoy7jnlrmnwh" path="res://scenes/enemies/tmp_enemy.gd" id="1_ph245"]
 [ext_resource type="Texture2D" uid="uid://c1qqmm0njbj16" path="res://assets/textures/icon.svg" id="2_n3a8i"]
+[ext_resource type="PackedScene" uid="uid://cb78qepki3kcg" path="res://scenes/ui/bar/HealthBar.tscn" id="2_ra2xb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e6d4v"]
 size = Vector2(59, 7.5)
@@ -20,6 +21,14 @@ y_sort_enabled = true
 collision_layer = 2
 collision_mask = 129
 script = ExtResource("1_ph245")
+
+[node name="HealthBar" parent="." instance=ExtResource("2_ra2xb")]
+visible = false
+offset_left = -30.0
+offset_top = -80.0
+offset_right = 190.0
+offset_bottom = -52.0
+scale = Vector2(0.28, 0.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -30)
@@ -45,6 +54,8 @@ position = Vector2(0.5, -29.5)
 shape = SubResource("RectangleShape2D_ph245")
 
 [node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 position = Vector2(-34, -30)

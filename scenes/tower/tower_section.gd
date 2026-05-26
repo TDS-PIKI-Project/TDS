@@ -1,7 +1,8 @@
 class_name TowerSection extends RigidBody2D
 
 signal destroyed(section: TowerSection)
-@export var health: int = 1000
+@export var cur_health: float = 1000
+@export var max_health: float = 1000
 
 func _ready():
 	#gravity_scale = 0.0
@@ -20,11 +21,13 @@ func get_height() -> float:
 	return 100.0
 
 func take_damage(amount: int) -> void:
-	health -= amount
+	cur_health -= amount
 	
-	print("[tower_section] получает урон: %d | HP: %d / %d" % [amount, health, 1000])
-	
-	if health <= 0:
+	print("[tower_section] получает урон: %d | HP: %d / %d" % [amount, cur_health, 1000])
+	$HealthBar.set_health_percent(cur_health / max_health * 100)
+	$HealthBar.visible = true
+
+	if cur_health <= 0:
 		destroy()
 
 func destroy() -> void:

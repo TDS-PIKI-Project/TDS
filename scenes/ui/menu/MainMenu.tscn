@@ -1,0 +1,196 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhw648h5qi2y8"]
+
+[ext_resource type="Script" uid="uid://dnu8ayisulquj" path="res://scenes/ui/menu/MainMenu.gd" id="1_manl8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.15, 0.18, 0.22, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_manl8")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.1, 0.14, 1)
+
+[node name="MainLayout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="MarginContainer" parent="MainLayout"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="SettingsBtn" type="Button" parent="MainLayout/TopBar"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "⚙️"
+
+[node name="ContentArea" type="MarginContainer" parent="MainLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ContentVBox" type="VBoxContainer" parent="MainLayout/ContentArea"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="PageContainer" type="Control" parent="MainLayout/ContentArea/ContentVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MainPage" type="Control" parent="MainLayout/ContentArea/ContentVBox/PageContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameContainer" type="PanelContainer" parent="MainLayout/ContentArea/ContentVBox/PageContainer/MainPage"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Label" type="Label" parent="MainLayout/ContentArea/ContentVBox/PageContainer/MainPage/GameContainer"]
+layout_mode = 2
+text = "Тут будет игровой процесс"
+
+[node name="ShopPage" type="Panel" parent="MainLayout/ContentArea/ContentVBox/PageContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainLayout/ContentArea/ContentVBox/PageContainer/ShopPage"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 60.0
+text = "МАГАЗИН (СКОРО)"
+
+[node name="UpgradePage" type="Panel" parent="MainLayout/ContentArea/ContentVBox/PageContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainLayout/ContentArea/ContentVBox/PageContainer/UpgradePage"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 60.0
+text = "АПГРЕЙДЫ (СКОРО)"
+
+[node name="ActionArea" type="VBoxContainer" parent="MainLayout/ContentArea/ContentVBox"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="PlayBtn" type="Button" parent="MainLayout/ContentArea/ContentVBox/ActionArea"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "ИГРАТЬ"
+
+[node name="BottomNav" type="PanelContainer" parent="MainLayout/ContentArea/ContentVBox/ActionArea"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="ButtonsHBox" type="HBoxContainer" parent="MainLayout/ContentArea/ContentVBox/ActionArea/BottomNav"]
+layout_mode = 2
+alignment = 1
+
+[node name="ShopBtn" type="Button" parent="MainLayout/ContentArea/ContentVBox/ActionArea/BottomNav/ButtonsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Магазин"
+
+[node name="HomeBtn" type="Button" parent="MainLayout/ContentArea/ContentVBox/ActionArea/BottomNav/ButtonsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Главная"
+
+[node name="UpgradesBtn" type="Button" parent="MainLayout/ContentArea/ContentVBox/ActionArea/BottomNav/ButtonsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Апгрейды"
+
+[node name="SettingsOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.59)
+
+[node name="SettingsMenu" type="PanelContainer" parent="SettingsOverlay"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="SettingsOverlay/SettingsMenu"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="LeaderboardBtn" type="Button" parent="SettingsOverlay/SettingsMenu/VBox"]
+layout_mode = 2
+text = "Таблица лидеров"
+
+[node name="LogoutBtn" type="Button" parent="SettingsOverlay/SettingsMenu/VBox"]
+layout_mode = 2
+text = "Выйти"
+
+[node name="CloseSettingsBtn" type="Button" parent="SettingsOverlay/SettingsMenu/VBox"]
+layout_mode = 2
+text = "Закрыть"
