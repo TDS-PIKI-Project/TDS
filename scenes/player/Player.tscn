@@ -7,6 +7,7 @@
 size = Vector2(128.246, 127.623)
 
 [node name="Player" type="CharacterBody2D"]
+position = Vector2(0, -10)
 script = ExtResource("1_gfjak")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
