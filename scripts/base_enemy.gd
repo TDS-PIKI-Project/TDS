@@ -13,8 +13,8 @@ class_name BaseEnemy
 @export var velocity_lerp_speed: float = 0.1
 
 var mass: float            = 1.0
-var max_health: int        = 100
-var current_health: int    = 100
+var max_health: float      = 100.0
+var current_health: float  = 100.0
 var attack_damage: int     = 10
 var attack_cooldown: float = 1.5
 
@@ -183,6 +183,8 @@ func take_damage(amount: int) -> void:
 		return
 	current_health -= amount
 	print("[%s] получает урон: %d | HP: %d / %d" % [name, amount, current_health, max_health])
+	$HealthBar.visible = true
+	$HealthBar.set_health_percent((float(current_health) / float(max_health)) * 100)
 	_play_anim("hurt")
 	if current_health <= 0:
 		_die()
@@ -206,7 +208,7 @@ func _die() -> void:
 	queue_free()
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("towers") or body.is_in_group("player"):
+	if body.is_in_group("tower_section") or body.is_in_group("player"):
 		if body not in _attack_targets:
 			_attack_targets.append(body)
 
@@ -236,7 +238,6 @@ func _play_anim(anim_name: String) -> void:
 	elif _anim_player.has_animation(anim_name):
 		if _anim_player.current_animation != anim_name:
 			_anim_player.play(anim_name)
-	neighbours.erase(body)
 
 func get_tower_wall_x() -> float:
 	var tower_manager = get_tree().get_first_node_in_group("tower_manager")
