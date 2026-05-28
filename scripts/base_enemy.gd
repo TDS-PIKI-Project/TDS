@@ -1,9 +1,6 @@
 extends CharacterBody2D
 class_name BaseEnemy
 
-# ═══════════════════════════════════════════════════════════════════
-#  ПАРАМЕТРЫ ДВИЖЕНИЯ
-# ═══════════════════════════════════════════════════════════════════
 @export var speed: float               = 150.0
 @export var push_force: float          = 10.0
 @export var lane_attraction: float     = 2.0
@@ -12,39 +9,27 @@ class_name BaseEnemy
 @export var push_y_strength: float    = 1.0
 @export var velocity_lerp_speed: float = 0.1
 
-# ═══════════════════════════════════════════════════════════════════
-#  БОЕВЫЕ ПАРАМЕТРЫ (задаются в _init_stats подкласса)
-# ═══════════════════════════════════════════════════════════════════
 var mass: float            = 1.0
 var max_health: int        = 100
 var current_health: int    = 100
 var attack_damage: int     = 10
 var attack_cooldown: float = 1.5
 
-# ═══════════════════════════════════════════════════════════════════
-#  СОСТОЯНИЕ
-# ═══════════════════════════════════════════════════════════════════
 var lane_clamp_offset: float = 0.0
 var target_lane_y: float     = 0.0
 var all_lanes: Array         = []
-var neighbours: Array        = []      # соседи-враги (физика толкания)
-var _attack_targets: Array   = []      # башни/игрок в зоне атаки
+var neighbours: Array        = []
+var _attack_targets: Array   = []
 
 var _attack_timer: float     = 0.0
 var _is_attacking: bool      = false
 var _is_dead: bool           = false
 
-# ═══════════════════════════════════════════════════════════════════
-#  ДОЧЕРНИЕ НОДЫ
-# ═══════════════════════════════════════════════════════════════════
 var _collision_shape: CollisionShape2D = null
-var _detector_area: Area2D             = null   # соседи-враги
-var _attack_area: Area2D               = null   # зона атаки по башням
+var _detector_area: Area2D             = null
+var _attack_area: Area2D               = null 
 var _anim_player: AnimationPlayer      = null
 
-# ═══════════════════════════════════════════════════════════════════
-#  ИНИЦИАЛИЗАЦИЯ
-# ═══════════════════════════════════════════════════════════════════
 var enemy_type: Globals.EnemyType = Globals.EnemyType.SMALL
 
 func _ready() -> void:
@@ -69,7 +54,6 @@ func _ready() -> void:
 
 	_play_anim("walk")
 
-# Перегружается в подклассах
 func _init_stats() -> void:
 	var data: Dictionary = Globals.ENEMIES[enemy_type]
 	var rng := RandomNumberGenerator.new()
@@ -90,9 +74,7 @@ func _init_stats() -> void:
 
 	var s: float = rng.randf_range(data["scale_min"], data["scale_max"])
 	scale = Vector2(s, s)
-# ═══════════════════════════════════════════════════════════════════
-#  ФИЗИКА ДВИЖЕНИЯ + ТОЛКАНИЕ СОСЕДЕЙ
-# ═══════════════════════════════════════════════════════════════════
+
 func get_physic_colision_size() -> float:
 	if _collision_shape == null or _collision_shape.shape == null:
 		return 0.0
@@ -126,39 +108,25 @@ func _physics_process(_delta: float) -> void:
 		if dist < radius and dist > 0.001:
 			var diff: Vector2 = global_position - other_enemy.global_position
 
-			# Насколько мобы перекрываются по X (0.0 = нет, 1.0 = полное)
 			var x_overlap: float = 1.0 - clamp(abs(diff.x) / radius, 0.0, 1.0)
-
-			# Чем легче я относительно соседа — тем сильнее меня выталкивает в Y
-			# Маленький (1) рядом с большим (5): 5/6 = 0.83 -> лезет вверх легко
-			# Большой (5) рядом с маленьким (1): 1/6 = 0.17 -> почти не двигается
 			var climb_factor: float = other_mass / (mass + other_mass)
 
-			# X: лёгкое торможение — не проходят насквозь
 			push_vector.x += diff.normalized().x * (radius - dist) * push_x_strength * 0.3
-
-			# Y: залезание — тем сильнее, чем больше X-перекрытие и чем легче моб
 			push_vector.y += diff.normalized().y * (radius - dist) * push_y_strength * x_overlap * climb_factor
 
 	var target_velocity: Vector2 = Vector2(-speed, 0.0) + push_vector * push_force
 
-	# Притяжение к СВОЕЙ линии — target_lane_y задаётся спавнером и не меняется
-	# Когда впередистоящий уходит -> x_overlap падает -> push_y исчезает -> моб проваливается обратно
 	target_velocity.y += (target_lane_y - global_position.y) * lane_attraction
 
 	velocity = velocity.lerp(target_velocity, velocity_lerp_speed)
 	move_and_slide()
 
-	# Клэмп вокруг СВОЕЙ линии, не между всеми линиями
 	global_position.y = clamp(
 		global_position.y,
 		target_lane_y - lane_clamp_offset,
 		target_lane_y + lane_clamp_offset
 	)
 
-# ═══════════════════════════════════════════════════════════════════
-#  АТАКА
-# ═══════════════════════════════════════════════════════════════════
 func _process(delta: float) -> void:
 	if _is_dead:
 		return
@@ -177,10 +145,8 @@ func _perform_attack(target: Node) -> void:
 	velocity      = Vector2.ZERO
 	_play_anim("attack")
 
-	# Ждём анимацию только если она реально есть
 	if _anim_player != null and _anim_player.has_animation("attack"):
 		await _anim_player.animation_finished
-	# Без анимации — никакого await, атака мгновенная
 
 	if is_instance_valid(target) and target.has_method("take_damage"):
 		target.take_damage(attack_damage)
@@ -190,15 +156,11 @@ func _perform_attack(target: Node) -> void:
 	_is_attacking = false
 	_play_anim("walk")
 
-# ═══════════════════════════════════════════════════════════════════
-#  ПОЛУЧЕНИЕ УРОНА  (вызывается напрямую из BaseBullet)
-# ═══════════════════════════════════════════════════════════════════
 func take_damage(amount: int) -> void:
 	if _is_dead:
 		return
 	current_health -= amount
 	print("[%s] получает урон: %d | HP: %d / %d" % [name, amount, current_health, max_health])
-	# Анимация hurt НЕ останавливает физику — просто воспроизводится поверх
 	_play_anim("hurt")
 	if current_health <= 0:
 		_die()
@@ -210,15 +172,10 @@ func _die() -> void:
 	set_process(false)
 	print("[%s] умирает" % name)
 	_play_anim("death")
-	# Ждём анимацию смерти только если она есть
 	if _anim_player != null and _anim_player.has_animation("death"):
 		await _anim_player.animation_finished
-	# Без анимации — удаляем сразу, без задержки
 	queue_free()
 
-# ═══════════════════════════════════════════════════════════════════
-#  СИГНАЛЫ
-# ═══════════════════════════════════════════════════════════════════
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("towers") or body.is_in_group("player"):
 		if body not in _attack_targets:
@@ -235,9 +192,6 @@ func _on_detector_body_entered(body: Node2D) -> void:
 func _on_detector_body_exited(body: Node2D) -> void:
 	neighbours.erase(body)
 
-# ═══════════════════════════════════════════════════════════════════
-#  АНИМАЦИЯ
-# ═══════════════════════════════════════════════════════════════════
 func _play_anim(anim_name: String) -> void:
 	if _anim_player == null:
 		return
