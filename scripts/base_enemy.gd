@@ -27,8 +27,9 @@ var _is_dead: bool           = false
 
 var _collision_shape: CollisionShape2D = null
 var _detector_area: Area2D             = null
-var _attack_area: Area2D               = null 
+var _attack_area: Area2D               = null
 var _anim_player: AnimationPlayer      = null
+var _skin_suffix: int = 1
 
 var enemy_type: Globals.EnemyType = Globals.EnemyType.SMALL
 
@@ -71,6 +72,7 @@ func _init_stats() -> void:
 	max_health      = rng.randi_range(data["health_min"],  data["health_max"])
 	attack_damage   = rng.randi_range(data["damage_min"],  data["damage_max"])
 	attack_cooldown = rng.randf_range(data["cooldown_min"], data["cooldown_max"])
+	_skin_suffix = randi_range(1, 3)
 
 	var s: float = rng.randf_range(data["scale_min"], data["scale_max"])
 	scale = Vector2(s, s)
@@ -109,13 +111,15 @@ func _physics_process(_delta: float) -> void:
 			var diff: Vector2 = global_position - other_enemy.global_position
 
 			var x_overlap: float = 1.0 - clamp(abs(diff.x) / radius, 0.0, 1.0)
+
 			var climb_factor: float = other_mass / (mass + other_mass)
 
 			push_vector.x += diff.normalized().x * (radius - dist) * push_x_strength * 0.3
+
 			push_vector.y += diff.normalized().y * (radius - dist) * push_y_strength * x_overlap * climb_factor
 
 	var target_velocity: Vector2 = Vector2(-speed, 0.0) + push_vector * push_force
-
+	
 	target_velocity.y += (target_lane_y - global_position.y) * lane_attraction
 
 	velocity = velocity.lerp(target_velocity, velocity_lerp_speed)
@@ -166,14 +170,21 @@ func take_damage(amount: int) -> void:
 		_die()
 
 func _die() -> void:
-	_is_dead      = true
+	_is_dead = true
 	_is_attacking = false
 	set_physics_process(false)
 	set_process(false)
 	print("[%s] умирает" % name)
+	
 	_play_anim("death")
-	if _anim_player != null and _anim_player.has_animation("death"):
-		await _anim_player.animation_finished
+	
+	if _anim_player != null:
+		var death_anim = "death_" + str(_skin_suffix)
+		if _anim_player.has_animation(death_anim):
+			await _anim_player.animation_finished
+		elif _anim_player.has_animation("death"):
+			await _anim_player.animation_finished
+	
 	queue_free()
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
@@ -195,12 +206,15 @@ func _on_detector_body_exited(body: Node2D) -> void:
 func _play_anim(anim_name: String) -> void:
 	if _anim_player == null:
 		return
-	# Смерть не прерывается ничем
 	if _is_dead and anim_name != "death":
 		return
-	# Атака не прерывается walk и hurt
 	if _is_attacking and anim_name in ["walk", "hurt"]:
 		return
-	if _anim_player.has_animation(anim_name) \
-			and _anim_player.current_animation != anim_name:
-		_anim_player.play(anim_name)
+	
+	var skinned_name = anim_name + "_" + str(_skin_suffix)
+	if _anim_player.has_animation(skinned_name):
+		if _anim_player.current_animation != skinned_name:
+			_anim_player.play(skinned_name)
+	elif _anim_player.has_animation(anim_name):
+		if _anim_player.current_animation != anim_name:
+			_anim_player.play(anim_name)
