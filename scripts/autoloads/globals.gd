@@ -13,7 +13,7 @@ const AUTH_PATH = "res://scenes/ui/authorization/Auth.tscn"
 const MAIN_MENU_PATH = "res://scenes/ui/menu/MainMenu.tscn"
 const LEADERBOARD_PATH = "res://scenes/ui/board/LeaderboardScene.tscn"
 
-const MAX_NUM_OF_SECTIONS = 5
+const MAX_NUM_OF_SECTIONS = 3
 
 enum HandWeapons {
 	PISTOL,
@@ -183,3 +183,15 @@ class TowerProperties:
 # --- FUNCTIONS ---
 func change_level(level_path: String) -> void:
 	get_tree().change_scene_to_file(level_path)
+	
+func int_to_section_type(level: int) -> SectionLevel:
+	if level == 0:
+		return SectionLevel.ONE
+	if level == 1:
+		return SectionLevel.TWO
+	if level == 2:
+		return SectionLevel.THREE
+	if level == 3:
+		return SectionLevel.FOUR
+	assert(false, "int_to_section_type function: error in level... %d" % level)
+	return SectionLevel.ONE

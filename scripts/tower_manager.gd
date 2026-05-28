@@ -11,7 +11,7 @@ func _ready() -> void:
 	GameManager.game_started.connect(_on_game_started)
 	add_to_group("tower_manager")
 
-func build_tower(parent_node: Node2D, start_x: float = 200, start_y: float = 600) -> void:
+func build_tower(parent_node: Node2D, start_x: float = 200, start_y: float = 560) -> void:
 	tower_root = parent_node
 	start_x_c = start_x
 	
@@ -27,12 +27,31 @@ func build_tower(parent_node: Node2D, start_x: float = 200, start_y: float = 600
 		if GameManager.floors[i] == null:
 			break
 		var section = section_scene.instantiate()
-		section.set_section_type(Globals.SectionLevel.ONE)
+		section.set_section_type(GameManager.floors[i])
 		var y_pos = last_section.position.y - last_section.get_height()
 		section.position = Vector2(start_x, y_pos)
 		section.destroyed.connect(handle_section_destroyed)
 		
 		parent_node.add_child(section)
+		
+		var current_level = GameManager.floors[i]
+		var upgrade_btn = Button.new()
+		upgrade_btn.custom_minimum_size = Vector2(90, 35)
+		upgrade_btn.pivot_offset = upgrade_btn.custom_minimum_size / 2
+		
+		if current_level >= 3:
+			upgrade_btn.text = "Макс.\nуровень"
+			upgrade_btn.disabled = true
+		else:
+			var cost = Globals.TOWER_UPGRADE_COSTS[current_level]
+			upgrade_btn.text = "Улучшить\n%d" % cost
+			upgrade_btn.pressed.connect(func():
+				var main_menu = get_tree().get_first_node_in_group("main_menu")
+				if main_menu: main_menu._on_upgrade_pressed(i, cost)
+			)
+		upgrade_btn.position = Vector2(100, -(upgrade_btn.custom_minimum_size.y / 2))
+		section.add_child(upgrade_btn)
+		upgrade_btn.add_to_group("tower_button")
 		
 		var joint = PinJoint2D.new()
 		joint.position = Vector2(start_x, (last_section.position.y + section.position.y) / 2)
@@ -56,6 +75,11 @@ func start_moving(speed: float) -> void:
 			section.start_wheels(speed)
 			
 func _on_game_started() -> void:
+	var shop_buttons = get_tree().get_nodes_in_group("tower_button")
+	for btn in shop_buttons:
+		if is_instance_valid(btn):
+			btn.queue_free()
+	
 	start_moving(tower_speed)
 	
 func _on_game_ended() -> void:
@@ -76,6 +100,30 @@ func spawn_player_on_top() -> void:
 						player.get_node("Sprite2D").scale.y
 						
 	player.position = Vector2(0, -(section_height / 2) - (player_height / 2))
+	
+	var create_button_del: bool = true
+	for i in range(Globals.MAX_NUM_OF_SECTIONS):
+		if GameManager.floors[i] == null:
+			create_button_del = false
+			break
+	
+	if create_button_del:
+		return
+	
+	var buy_btn = Button.new()
+	buy_btn.text = "Купить этаж\n%d" % Globals.TOWER_BUY_COST
+	buy_btn.custom_minimum_size = Vector2(100, 40)
+	
+	buy_btn.pivot_offset = buy_btn.custom_minimum_size / 2
+	buy_btn.position = player.position - Vector2(200, buy_btn.custom_minimum_size.y / 2)
+	
+	buy_btn.pressed.connect(func():
+		var main_menu = get_tree().get_first_node_in_group("main_menu")
+		if main_menu: main_menu._on_buy_floor_pressed()
+	)
+	
+	top_section.add_child(buy_btn)
+	buy_btn.add_to_group("tower_button")
 
 func handle_section_destroyed(destroyed_section: TowerSection) -> void:
 	var destroyed_index = sections.find(destroyed_section)
@@ -127,8 +175,9 @@ func get_section_under_mouse() -> TowerSection:
 	return null
 	
 func _physics_process(_delta: float) -> void:
-	for section in sections:
-		if is_instance_valid(section):
-			section.global_position.x = start_x_c
-			if section is RigidBody2D:
-				section.linear_velocity.x = 0.0
+	pass
+	#for section in sections:
+		#if is_instance_valid(section):
+			#section.global_position.x = start_x_c
+			#if section is RigidBody2D:
+				#section.linear_velocity.x = 0.0

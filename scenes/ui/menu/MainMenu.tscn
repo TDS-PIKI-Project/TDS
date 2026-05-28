@@ -36,9 +36,9 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TopBar" type="MarginContainer" parent="MainLayout"]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-theme_override_constants/margin_top = 20
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 20
 
 [node name="SettingsBtn" type="Button" parent="MainLayout/TopBar"]
@@ -79,6 +79,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
@@ -193,3 +194,30 @@ text = "Выйти"
 [node name="CloseSettingsBtn" type="Button" parent="OverlayLayer/SettingsOverlay/SettingsMenu/VBox"]
 layout_mode = 2
 text = "Закрыть"
+
+[node name="UsernameLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 827.0
+offset_top = 89.0
+offset_right = 1065.0
+offset_bottom = 129.0
+theme_override_font_sizes/font_size = 24
+text = "user"
+
+[node name="GoldLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 826.0
+offset_top = 139.0
+offset_right = 1064.0
+offset_bottom = 179.0
+theme_override_font_sizes/font_size = 24
+text = "gold"
+
+[node name="HighScoreLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 827.0
+offset_top = 190.0
+offset_right = 1065.0
+offset_bottom = 230.0
+theme_override_font_sizes/font_size = 24
+text = "record"

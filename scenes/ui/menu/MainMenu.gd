@@ -11,10 +11,16 @@ const LEADERBOARD_SCENE = preload(Globals.LEADERBOARD_PATH)
 @onready var game_container = %GameContainer
 @onready var bottom_nav = $MainLayout/ContentArea/ContentVBox/ActionArea/BottomNav
 
+@onready var username_label = $UsernameLabel
+@onready var gold_label = $GoldLabel
+@onready var high_score_label = $HighScoreLabel
+
 const BASE_URL = "http://127.0.0.1:8000"
 @onready var profile_http_request: HTTPRequest = HTTPRequest.new()
 
 func _ready():
+	add_to_group("main_menu")
+	
 	$MainLayout/ContentArea/ContentVBox/ActionArea/BottomNav/ButtonsHBox/ShopBtn.pressed.connect(_show_page.bind("shop"))
 	$MainLayout/ContentArea/ContentVBox/ActionArea/BottomNav/ButtonsHBox/HomeBtn.pressed.connect(_show_page.bind("main"))
 	$MainLayout/ContentArea/ContentVBox/ActionArea/BottomNav/ButtonsHBox/UpgradesBtn.pressed.connect(_show_page.bind("upgrade"))
@@ -52,11 +58,9 @@ func _on_profile_loaded(_result, response_code, _headers, body):
 			GameManager.floors[0] = response.get("floor_1")
 			GameManager.floors[1] = response.get("floor_2")
 			GameManager.floors[2] = response.get("floor_3")
-			GameManager.floors[3] = response.get("floor_4")
-			GameManager.floors[4] = response.get("floor_5")
 			
 			_load_tower_into_ui() 
-			
+			_update_profile_ui()
 			_show_page("main")
 			
 			# $TopBar/GoldLabel.text = str(GameManager.gold)
@@ -64,8 +68,10 @@ func _on_profile_loaded(_result, response_code, _headers, body):
 		print("Ошибка загрузки профиля с сервера: ", response_code)
 	
 func _load_tower_into_ui():
-	await get_tree().process_frame
-	
+	if game_container.has_node("TowerAnchor"):
+		game_container.get_node("TowerAnchor").queue_free()
+		await get_tree().process_frame
+
 	var tower_anchor = Node2D.new()
 	tower_anchor.name = "TowerAnchor"
 	game_container.add_child(tower_anchor)
@@ -73,7 +79,7 @@ func _load_tower_into_ui():
 	var tower_manager = TowerManager.new()
 	add_child(tower_manager)
 	
-	tower_manager.build_tower(tower_anchor, 300, 350)
+	tower_manager.build_tower(tower_anchor, 300, 400)
 
 func _show_page(page_name: String):
 	shop_page.hide()
@@ -100,3 +106,39 @@ func _on_close_leaderboard_pressed():
 func _on_logout():
 	GameManager.reset_session()
 	get_tree().change_scene_to_file(Globals.AUTH_PATH)
+
+func _on_buy_floor_pressed():
+	var next_floor_index = -1
+	for i in range(GameManager.floors.size()):
+		if GameManager.floors[i] == null:
+			next_floor_index = i
+			break
+			
+	if next_floor_index == -1 or GameManager.gold < Globals.TOWER_BUY_COST:
+		return
+		
+	GameManager.gold -= Globals.TOWER_BUY_COST
+	GameManager.floors[next_floor_index] = 0 
+	
+	_update_profile_ui()
+	GameManager.save_progress_to_server()
+	await _load_tower_into_ui()
+
+func _on_upgrade_pressed(floor_index: int, cost: int):
+	if GameManager.gold < cost:
+		return
+		
+	GameManager.gold -= cost
+	GameManager.floors[floor_index] += 1
+	
+	_update_profile_ui()
+	GameManager.save_progress_to_server()
+	await _load_tower_into_ui()
+	
+func _update_profile_ui():
+	if is_instance_valid(username_label):
+		username_label.text = "Игрок: " + str(GameManager.username)
+	if is_instance_valid(gold_label):
+		gold_label.text = "Золото: " + str(GameManager.gold)
+	if is_instance_valid(high_score_label):
+		high_score_label.text = "Рекорд: " + str(GameManager.score)

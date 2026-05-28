@@ -17,7 +17,7 @@ var gold: int = 100
 var score: int = 0
 var is_game_active: bool = false
 
-var floors: Array = [null, null, null, null, null]
+var floors: Array = [null, null, null]
 
 @onready var save_http_client: HTTPRequest = HTTPRequest.new()
 
@@ -45,8 +45,6 @@ func save_progress_to_server():
 		"floor_1": floors[0],
 		"floor_2": floors[1],
 		"floor_3": floors[2],
-		"floor_4": floors[3],
-		"floor_5": floors[4]
 	}
 	
 	var body = JSON.stringify(save_data)
@@ -72,4 +70,4 @@ func reset_session():
 	username = ""
 	gold = 100
 	score = 0
-	floors = [null, null, null, null, null]
+	floors = [null, null, null]

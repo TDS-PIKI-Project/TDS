@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody2D
 
-@export var max_health: float = 10
-var cur_health: float = 10
+@export var max_health: float = 100
+var cur_health: float = 100
 var _is_dead: bool = false
 
 @onready var sprite       = $Sprite2D
@@ -44,9 +44,9 @@ func take_damage(amount: int) -> void:
 	if _is_dead or not GameManager.is_game_active:
 		return
 	
+	cur_health -= amount
 	$HealthBar.set_health_percent(cur_health / max_health * 100)
 	$HealthBar.visible = true
-	cur_health -= amount
 	print("[Player] получает урон: %d | HP: %d / %d" % [amount, cur_health, max_health])
 
 	if cur_health <= 0:
