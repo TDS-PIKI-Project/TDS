@@ -173,7 +173,7 @@ func _physics_process(_delta: float) -> void:
 #  АТАКА
 # ═══════════════════════════════════════════════════════════════════
 func _process(delta: float) -> void:
-	if _is_dead:
+	if _is_dead or not GameManager.is_game_active:
 		return
 	if _attack_timer > 0.0:
 		_attack_timer -= delta
@@ -256,7 +256,7 @@ func _on_detector_body_exited(body: Node2D) -> void:
 #  АНИМАЦИЯ
 # ═══════════════════════════════════════════════════════════════════
 func _play_anim(anim_name: String) -> void:
-	if _anim_player == null:
+	if _anim_player == null or not GameManager.is_game_active:
 		return
 	# Смерть не прерывается ничем
 	if _is_dead and anim_name != "death":

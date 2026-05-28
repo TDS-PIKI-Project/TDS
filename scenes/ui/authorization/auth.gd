@@ -10,8 +10,6 @@ extends Control
 @onready var r_user = $FormContainer/MarginContainer/MainVBox/RegisterBox/RUserEdit
 @onready var r_pass = $FormContainer/MarginContainer/MainVBox/RegisterBox/RPassEdit
 
-const BASE_URL = "http://127.0.0.1:8000"
-
 func _ready():
 	$FormContainer/MarginContainer/MainVBox/LoginBox/LoginBtn.pressed.connect(_on_login_pressed)
 	$FormContainer/MarginContainer/MainVBox/RegisterBox/RegisterBtn.pressed.connect(_on_register_pressed)
@@ -39,7 +37,7 @@ func _on_login_pressed():
 	var body = "username=%s&password=%s" % [l_user.text.uri_encode(), l_pass.text.uri_encode()]
 	var headers = ["Content-Type: application/x-www-form-urlencoded"]
 	
-	http_request.request(BASE_URL + "/login", headers, HTTPClient.METHOD_POST, body)
+	http_request.request(GameManager.BASE_URL + "/login", headers, HTTPClient.METHOD_POST, body)
 	_show_status("Вход...", Color.YELLOW)
 
 func _on_register_pressed():
@@ -50,7 +48,7 @@ func _on_register_pressed():
 	var body = JSON.stringify({"username": r_user.text, "password": r_pass.text})
 	var headers = ["Content-Type: application/json"]
 	
-	http_request.request(BASE_URL + "/register", headers, HTTPClient.METHOD_POST, body)
+	http_request.request(GameManager.BASE_URL + "/register", headers, HTTPClient.METHOD_POST, body)
 	_show_status("Регистрация...", Color.YELLOW)
 
 
@@ -66,8 +64,9 @@ func _on_request_completed(_result, response_code, _headers, body):
 		if response.has("access_token"):
 			GameManager.auth_token = response["access_token"]
 			GameManager.username = l_user.text
+			
 			_show_status("Успешный вход!", Color.GREEN)
-			get_tree().change_scene_to_file(Globals.MAIN_MENU_PATH) 
+			Globals.change_level(Globals.MAIN_MENU_PATH) 
 		else:
 			_show_status("Регистрация успешна! Войдите.", Color.GREEN)
 			_switch_to_login()

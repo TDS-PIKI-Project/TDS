@@ -1,12 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://d17tqo364my13"]
+[gd_scene load_steps=3 format=3 uid="uid://d17tqo364my13"]
 
 [ext_resource type="Script" uid="uid://b4vhw837caurx" path="res://scenes/levels/level_1.gd" id="1_ksju7"]
+[ext_resource type="PackedScene" uid="uid://bjvnlqihok5t4" path="res://scenes/ui/menu/PostGameMenu.tscn" id="2_6iamk"]
 
 [node name="Level 1" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_ksju7")
-total_lanes = null
-buffer_size = null
-lane_height = null
-start_y = null
-lane_random_offset = null
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PostGameMenu" parent="CanvasLayer" instance=ExtResource("2_6iamk")]
+visible = false

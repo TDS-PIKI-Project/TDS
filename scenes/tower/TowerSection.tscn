@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://dupupa1otabn4"]
+[gd_scene load_steps=7 format=3 uid="uid://dupupa1otabn4"]
 
 [ext_resource type="Script" uid="uid://bv0s67um85nq8" path="res://scenes/tower/tower_section.gd" id="1_38jb0"]
-[ext_resource type="Texture2D" uid="uid://dte4qwr3gr3u2" path="res://assets/textures/walls/tower_1_w.png" id="1_yws7b"]
 [ext_resource type="PackedScene" uid="uid://cb78qepki3kcg" path="res://scenes/ui/bar/HealthBar.tscn" id="3_sc037"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yws7b"]
@@ -27,7 +26,6 @@ script = ExtResource("1_38jb0")
 [node name="box" type="Sprite2D" parent="."]
 z_index = 1
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("1_yws7b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0)

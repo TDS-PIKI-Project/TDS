@@ -1,5 +1,7 @@
 class_name BaseLevel extends Node2D
 
+@onready var post_game_menu: ColorRect = $CanvasLayer/PostGameMenu
+
 @export var total_lanes: int = 5
 @export var buffer_size: int = 1
 @export var lane_height: float = 10.0
@@ -14,8 +16,13 @@ var player: Node2D = null
 var all_lanes = []
 var spawn_lanes = []
 var enemies_arr = []
-var score_label : Node
+var statistic_labels : Node
+var gold_earned_this_run: int = 0
 var score : int = 0
+var enemies_killed_count: int = 0
+var start_time_msec: float = 0.0
+var final_survival_time: float = 0.0
+
 
 const BASE_URL = "http://127.0.0.1:8000/submit_score"
 @onready var http_request: HTTPRequest = HTTPRequest.new()
@@ -24,8 +31,12 @@ func _ready():
 	setup_lanes()
 	setup_level()
 	
-	score_label = load(Globals.SCORE_PATH).instantiate()
-	add_child(score_label)
+	tower_manager = TowerManager.new()
+	add_child(tower_manager)
+	tower_manager.build_tower(self)
+	
+	statistic_labels = load(Globals.STATISTICS_PATH).instantiate()
+	add_child(statistic_labels)
 	
 	add_child(http_request)
 	http_request.request_completed.connect(_on_score_submitted)
@@ -38,8 +49,15 @@ func _ready():
 	timer.autostart = true
 	timer.start()
 	
+	start_time_msec = Time.get_ticks_msec()
+	statistic_labels.updateGold()
+	statistic_labels.setTimer()
+	statistic_labels.updateTimer()
+	
 	if tower_manager.player:
 		player = tower_manager.player
+		
+	GameManager.game_started.emit()
 
 func setup_lanes():
 	all_lanes.clear()
@@ -78,7 +96,6 @@ func send_score_to_server(score_value: int) -> void:
 		print("Ошибка: Пользователь не авторизован")
 		return
 	
-	print("Z")
 	# Формируем JSON тело запроса согласно Pydantic-схеме ScoreSubmit
 	var body = JSON.stringify({"score": score_value})
 	
@@ -87,27 +104,20 @@ func send_score_to_server(score_value: int) -> void:
 		"Content-Type: application/json",
 		"Authorization: Bearer " + GameManager.auth_token
 	]
-	print("A")	
 	var error = http_request.request(BASE_URL, headers, HTTPClient.METHOD_POST, body)
-	print("A")
 	if error != OK:
 		print("Ошибка инициализации запроса: ", error)
 
 func _on_score_submitted(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	print("L")
 	if response_code == 200:
-		print("U")
 		var json = JSON.new()
 		var parse_err = json.parse(body.get_string_from_utf8())
 		
 		if parse_err == OK:
-			print("P")
 			var response_data = json.get_data()
 			print("Счет успешно обновлен!")
-			print("Новый рекорд: ", response_data["new_record"])
-			print("Текущий лучший счет: ", response_data["current_score"])
-			get_tree().change_scene_to_file("res://MainMenu.tscn")
-			
+			if response_data.get("new_record") == true:
+				post_game_menu.activate_new_record_animation()
 	else:
 		print("Ошибка сервера. Код ответа: ", response_code)
 		print("Детали: ", body.get_string_from_utf8())
@@ -117,18 +127,34 @@ func _process(delta: float) -> void:
 	#print("Игрок сейчас умер? ", player)
 	if player != null and player._is_dead:
 		if not GameManager.is_logged_in():
-			print("Zakupa")
 			return
 		send_score_to_server(score)
 		player.queue_free()
+		player = null
+		
+		var current_time_msec = Time.get_ticks_msec()
+		final_survival_time = (current_time_msec - start_time_msec) / 1000.0
+		
+		GameManager.save_progress_to_server()
+		post_game_menu.show_game_over(score, enemies_killed_count, gold_earned_this_run, final_survival_time)
 	
+	if player == null or player._is_dead:
+		return
+		
 	var new_arr = []
 	for enemy in enemies_arr:
 		if enemy._is_dead:
+			enemies_killed_count += 1
+			var coins_reward = 3 + (enemy.enemy_type * 2)
+			GameManager.gold += coins_reward
+			gold_earned_this_run += coins_reward
+			statistic_labels.updateGold()
+			
 			score += 2 * enemy.enemy_type + 1
-			score_label.updateScore(score)
+			statistic_labels.updateScore(score)
 			enemy.queue_free()
 		else:
 			new_arr.append(enemy)
 	enemies_arr = new_arr
+	statistic_labels.updateTimer()
 			

@@ -74,6 +74,7 @@ grow_vertical = 2
 
 [node name="GameContainer" type="PanelContainer" parent="MainLayout/ContentArea/ContentVBox/PageContainer/MainPage"]
 unique_name_in_owner = true
+clip_children = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -81,10 +82,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
-
-[node name="Label" type="Label" parent="MainLayout/ContentArea/ContentVBox/PageContainer/MainPage/GameContainer"]
-layout_mode = 2
-text = "Тут будет игровой процесс"
 
 [node name="ShopPage" type="Panel" parent="MainLayout/ContentArea/ContentVBox/PageContainer"]
 visible = false
@@ -153,9 +150,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Апгрейды"
 
-[node name="SettingsOverlay" type="ColorRect" parent="."]
+[node name="OverlayLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="SettingsOverlay" type="ColorRect" parent="OverlayLayer"]
 visible = false
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -163,7 +162,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.59)
 
-[node name="SettingsMenu" type="PanelContainer" parent="SettingsOverlay"]
+[node name="SettingsMenu" type="PanelContainer" parent="OverlayLayer/SettingsOverlay"]
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 1
 anchors_preset = 8
@@ -179,18 +178,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="VBox" type="VBoxContainer" parent="SettingsOverlay/SettingsMenu"]
+[node name="VBox" type="VBoxContainer" parent="OverlayLayer/SettingsOverlay/SettingsMenu"]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="LeaderboardBtn" type="Button" parent="SettingsOverlay/SettingsMenu/VBox"]
+[node name="LeaderboardBtn" type="Button" parent="OverlayLayer/SettingsOverlay/SettingsMenu/VBox"]
 layout_mode = 2
 text = "Таблица лидеров"
 
-[node name="LogoutBtn" type="Button" parent="SettingsOverlay/SettingsMenu/VBox"]
+[node name="LogoutBtn" type="Button" parent="OverlayLayer/SettingsOverlay/SettingsMenu/VBox"]
 layout_mode = 2
 text = "Выйти"
 
-[node name="CloseSettingsBtn" type="Button" parent="SettingsOverlay/SettingsMenu/VBox"]
+[node name="CloseSettingsBtn" type="Button" parent="OverlayLayer/SettingsOverlay/SettingsMenu/VBox"]
 layout_mode = 2
 text = "Закрыть"

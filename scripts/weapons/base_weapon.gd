@@ -18,6 +18,8 @@ func setup(weapon_type: Globals.HandWeapons) -> void:
 	cooldown_timer.autostart = false
 
 func _physics_process(delta: float) -> void:
+	if not GameManager.is_game_active:
+		return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		var mouse_pos = get_global_mouse_position()
 		global_rotation = global_position.angle_to_point(mouse_pos)

@@ -2,17 +2,18 @@ extends Node
 
 # --- CONSTANTS ---
 const LEVEL_1_PATH = "res://scenes/levels/level_1.tscn"
-const MENU_PATH = "res://scenes/ui/menu.tscn"
 const PLAYER_PATH = "res://scenes/player/Player.tscn"
 const BULLET_PATH = "res://scenes/weapons/Bullet.tscn"
 const WEAPON_PATH = "res://scenes/weapons/Weapon.tscn"
 const ENEMY_PATH = "res://scenes/enemies/tmp_enemy.tscn"
 const TOWER_BASE_PATH = "res://scenes/tower/TowerBase.tscn"
 const TOWER_SECTION_PATH = "res://scenes/tower/TowerSection.tscn"
-const SCORE_PATH = "res://scenes/levels/score.tscn"
+const STATISTICS_PATH = "res://scenes/levels/statistics.tscn"
 const AUTH_PATH = "res://scenes/ui/authorization/Auth.tscn"
 const MAIN_MENU_PATH = "res://scenes/ui/menu/MainMenu.tscn"
 const LEADERBOARD_PATH = "res://scenes/ui/board/LeaderboardScene.tscn"
+
+const MAX_NUM_OF_SECTIONS = 5
 
 enum HandWeapons {
 	PISTOL,
@@ -140,14 +141,45 @@ const ENEMIES = {
 	},
 }
 
+enum SectionLevel {
+	ONE,
+	TWO,
+	THREE,
+	FOUR,
+}
+
+const SECTION_INFO = {
+	SectionLevel.ONE: {
+		"texture": "res://assets/textures/walls/tower_1_w.png",
+		"max_hp": 200.0,
+	},
+	SectionLevel.TWO: {
+		"texture": "res://assets/textures/walls/tower_2_w.png",
+		"max_hp": 350.0,
+	},
+	SectionLevel.THREE: {
+		"texture": "res://assets/textures/walls/tower_3_w.png",
+		"max_hp": 600.0,
+	},
+	SectionLevel.FOUR: {
+		"texture": "res://assets/textures/walls/tower_4_w.png",
+		"max_hp": 1000.0,
+	},
+}
+
+const TOWER_BUY_COST = 100
+
+const TOWER_UPGRADE_COSTS = [150, 300, 500] 
+
 # --- VARIABLES ---
+
+class TowerProperties:
+	var Section1 : TowerSection = null
+	var Section2 : TowerSection = null
+	var Section3 : TowerSection = null
+	var Section4 : TowerSection = null
+	var Section5 : TowerSection = null
 
 # --- FUNCTIONS ---
 func change_level(level_path: String) -> void:
 	get_tree().change_scene_to_file(level_path)
-
-func save_progress():
-	pass
-
-func load_progress():
-	pass

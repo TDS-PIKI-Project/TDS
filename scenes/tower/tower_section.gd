@@ -1,13 +1,22 @@
 class_name TowerSection extends RigidBody2D
 
 signal destroyed(section: TowerSection)
-@export var cur_health: float = 1000
-@export var max_health: float = 1000
+var cur_health: float
+var max_health: float
+var section_type: Globals.SectionLevel
 
 func _ready():
-	#gravity_scale = 0.0
 	add_to_group("tower_section")
 	$Hitbox.body_entered.connect(_on_hitbox_body_entered)
+	
+func set_section_type(new_type: Globals.SectionLevel = Globals.SectionLevel.ONE) -> void:
+	section_type = new_type
+	$box.texture = load(Globals.SECTION_INFO[section_type]["texture"])
+	max_health = Globals.SECTION_INFO[section_type]["max_hp"]
+	restore_health()
+	
+func restore_health() -> void:
+	cur_health = max_health
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body is BaseBullet:
@@ -23,7 +32,7 @@ func get_height() -> float:
 func take_damage(amount: int) -> void:
 	cur_health -= amount
 	
-	print("[tower_section] получает урон: %d | HP: %d / %d" % [amount, cur_health, 1000])
+	print("[tower_section] получает урон: %d | HP: %d / %d" % [amount, cur_health, max_health])
 	$HealthBar.set_health_percent(cur_health / max_health * 100)
 	$HealthBar.visible = true
 
