@@ -221,3 +221,14 @@ offset_right = 1065.0
 offset_bottom = 230.0
 theme_override_font_sizes/font_size = 24
 text = "record"
+
+[node name="ExpensiveLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 626.0
+offset_top = 331.0
+offset_right = 929.0
+offset_bottom = 379.0
+theme_override_colors/font_color = Color(0.956863, 0, 0.180392, 1)
+theme_override_font_sizes/font_size = 30
+text = "Недостаточно денег!!!"

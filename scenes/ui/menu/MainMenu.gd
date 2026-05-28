@@ -14,6 +14,7 @@ const LEADERBOARD_SCENE = preload(Globals.LEADERBOARD_PATH)
 @onready var username_label = $UsernameLabel
 @onready var gold_label = $GoldLabel
 @onready var high_score_label = $HighScoreLabel
+@onready var expensive_label = $ExpensiveLabel
 
 const BASE_URL = "http://127.0.0.1:8000"
 @onready var profile_http_request: HTTPRequest = HTTPRequest.new()
@@ -31,6 +32,7 @@ func _ready():
 	$OverlayLayer/SettingsOverlay/SettingsMenu/VBox/LeaderboardBtn.pressed.connect(_on_leaderboard_pressed)
 	
 	$MainLayout/ContentArea/ContentVBox/ActionArea/PlayBtn.pressed.connect(_on_play_pressed)
+	expensive_label.visible = false
 	
 	add_child(profile_http_request)
 	profile_http_request.request_completed.connect(_on_profile_loaded)
@@ -86,6 +88,8 @@ func _show_page(page_name: String):
 	main_page.hide()
 	upgrade_page.hide()
 	
+	expensive_label.visible = false
+	
 	match page_name:
 		"shop": shop_page.show()
 		"main": main_page.show()
@@ -115,7 +119,9 @@ func _on_buy_floor_pressed():
 			break
 			
 	if next_floor_index == -1 or GameManager.gold < Globals.TOWER_BUY_COST:
+		expensive_label.visible = true
 		return
+	expensive_label.visible = false
 		
 	GameManager.gold -= Globals.TOWER_BUY_COST
 	GameManager.floors[next_floor_index] = 0 
@@ -126,7 +132,9 @@ func _on_buy_floor_pressed():
 
 func _on_upgrade_pressed(floor_index: int, cost: int):
 	if GameManager.gold < cost:
+		expensive_label.visible = true
 		return
+	expensive_label.visible = false
 		
 	GameManager.gold -= cost
 	GameManager.floors[floor_index] += 1
