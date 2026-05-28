@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3 uid="uid://dupupa1otabn4"]
+
+[ext_resource type="Script" uid="uid://bv0s67um85nq8" path="res://scenes/tower/tower_section.gd" id="1_38jb0"]
+[ext_resource type="PackedScene" uid="uid://cb78qepki3kcg" path="res://scenes/ui/bar/HealthBar.tscn" id="3_sc037"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yws7b"]
+size = Vector2(317, 278)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_38jb0"]
+size = Vector2(317, 278)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sc037"]
+size = Vector2(114, 110)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6yxoy"]
+size = Vector2(126, 6)
+
+[node name="TowerSection" type="RigidBody2D"]
+collision_layer = 576
+collision_mask = 576
+lock_rotation = true
+freeze = true
+freeze_mode = 1
+script = ExtResource("1_38jb0")
+
+[node name="box" type="Sprite2D" parent="."]
+z_index = 1
+scale = Vector2(0.4, 0.4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+scale = Vector2(0.4, 0.4)
+shape = SubResource("RectangleShape2D_yws7b")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 65
+collision_mask = 65
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0.5, 0)
+scale = Vector2(0.4, 0.4)
+shape = SubResource("RectangleShape2D_38jb0")
+
+[node name="EnemyWall" type="StaticBody2D" parent="."]
+collision_layer = 128
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyWall"]
+shape = SubResource("RectangleShape2D_sc037")
+
+[node name="Roof" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
+position = Vector2(0, -51)
+shape = SubResource("RectangleShape2D_6yxoy")
+
+[node name="HealthBar" parent="." instance=ExtResource("3_sc037")]
+visible = false
+z_index = 1
+offset_left = -49.0
+offset_top = -48.0
+offset_right = 171.0
+offset_bottom = -20.0
+scale = Vector2(0.45, 0.8)

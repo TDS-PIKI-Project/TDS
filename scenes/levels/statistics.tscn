@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=3 uid="uid://pog1esg5gcdq"]
+
+[ext_resource type="Script" uid="uid://c5lvfudjmw7o5" path="res://scenes/levels/statistics.gd" id="1_iqj3j"]
+
+[node name="Statistics" type="Node2D"]
+script = ExtResource("1_iqj3j")
+
+[node name="LabelScore" type="Label" parent="."]
+offset_left = 824.0
+offset_right = 910.0
+offset_bottom = 44.0
+theme_override_font_sizes/font_size = 32
+text = "Score:"
+
+[node name="ScoreValue" type="Label" parent="."]
+offset_left = 924.0
+offset_top = 1.0
+offset_right = 1075.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="LabelGold" type="Label" parent="."]
+offset_left = 824.0
+offset_top = 48.0
+offset_right = 907.0
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 30
+text = "Gold: "
+
+[node name="TimerCount" type="Label" parent="."]
+offset_left = 911.0
+offset_top = 91.0
+offset_right = 1034.0
+offset_bottom = 136.0
+theme_override_font_sizes/font_size = 32
+text = "00:00"
+
+[node name="LabelTimer" type="Label" parent="."]
+offset_left = 824.0
+offset_top = 91.0
+offset_right = 911.0
+offset_bottom = 133.0
+theme_override_font_sizes/font_size = 30
+text = "Time:"
+
+[node name="GoldAmount" type="Label" parent="."]
+offset_left = 905.0
+offset_top = 48.0
+offset_right = 1055.0
+offset_bottom = 93.0
+theme_override_font_sizes/font_size = 32
+text = "0"

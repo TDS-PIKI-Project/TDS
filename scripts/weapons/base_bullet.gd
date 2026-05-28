@@ -7,7 +7,6 @@ var spread_angle: float
 var texture_path: String
 
 func _ready():
-	collision_mask = 3
 	body_entered.connect(_on_body_entered)
 	if texture_path != "":
 		$Sprite2D.texture = load(texture_path)

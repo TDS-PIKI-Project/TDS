@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="tds-godot"
-run/main_scene="uid://uw81chytmcvu"
+run/main_scene="uid://bvthr3bxuqx4h"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://assets/textures/icon.svg"
 
 [autoload]
 
 Globals="*res://scripts/autoloads/globals.gd"
+GameManager="*res://scripts/autoloads/game_manager.gd"
 
 [input]
 

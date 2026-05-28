@@ -1,6 +1,9 @@
 extends CharacterBody2D
 class_name BaseEnemy
 
+# ═══════════════════════════════════════════════════════════════════
+#  ПАРАМЕТРЫ ДВИЖЕНИЯ
+# ═══════════════════════════════════════════════════════════════════
 @export var speed: float               = 150.0
 @export var push_force: float          = 10.0
 @export var lane_attraction: float     = 2.0
@@ -119,7 +122,22 @@ func _physics_process(_delta: float) -> void:
 			push_vector.y += diff.normalized().y * (radius - dist) * push_y_strength * x_overlap * climb_factor
 
 	var target_velocity: Vector2 = Vector2(-speed, 0.0) + push_vector * push_force
+
+	# Притяжение к СВОЕЙ линии — target_lane_y задаётся спавнером и не меняется
+	# Когда впередистоящий уходит -> x_overlap падает -> push_y исчезает -> моб проваливается обратно
 	
+	var dynamic_wall_x : float = get_tower_wall_x() + 3
+	
+	if dynamic_wall_x > 3.0 and global_position.x <= dynamic_wall_x:
+		if target_velocity.x < 0:
+			target_velocity.x = 0
+		global_position.x = dynamic_wall_x
+	
+	if not all_lanes.is_empty():
+		for lane_y in all_lanes:
+			if abs(global_position.y - lane_y) < abs(global_position.y - target_lane_y):
+				target_lane_y = lane_y
+
 	target_velocity.y += (target_lane_y - global_position.y) * lane_attraction
 
 	velocity = velocity.lerp(target_velocity, velocity_lerp_speed)
@@ -218,3 +236,36 @@ func _play_anim(anim_name: String) -> void:
 	elif _anim_player.has_animation(anim_name):
 		if _anim_player.current_animation != anim_name:
 			_anim_player.play(anim_name)
+	neighbours.erase(body)
+
+func get_tower_wall_x() -> float:
+	var tower_manager = get_tree().get_first_node_in_group("tower_manager")
+	var player_node = get_tree().get_first_node_in_group("player")
+	
+	if player_node == null or not is_instance_valid(player_node):
+		return 0.0
+		
+	var enemy_half_width = get_physic_colision_size() / 2.0
+	
+	if tower_manager and not tower_manager.sections.is_empty():
+		if tower_manager.sections.size() > 1:
+			var section_block = tower_manager.sections[1]
+			if is_instance_valid(section_block):
+				var sprite = section_block.get_node_or_null("box")
+				if sprite and sprite.texture:
+					var half_width = (sprite.texture.get_width() * \
+					 sprite.scale.x * section_block.scale.x) / 2.0
+					return section_block.global_position.x + half_width + enemy_half_width
+		
+		if player_node != null and is_instance_valid(player_node):
+			var player_sprite = player_node.get_node_or_null("Sprite2D")
+			var p_half_width = 0.0
+			
+			if player_sprite and player_sprite.texture:
+				p_half_width = (player_sprite.texture.get_width() * \
+				 player_sprite.scale.x * player_node.scale.x) / 2.0
+			
+			return player_node.global_position.x + p_half_width + enemy_half_width
+			
+	assert(false, "How? check condidtions in get_tower_wall_x.")
+	return 0.0
