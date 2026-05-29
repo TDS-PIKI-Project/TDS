@@ -2,13 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dfv7p7e43o2sl" path="res://scenes/player/player.gd" id="1_gfjak"]
 [ext_resource type="PackedScene" uid="uid://cb78qepki3kcg" path="res://scenes/ui/bar/HealthBar.tscn" id="2_4kuee"]
-[ext_resource type="Texture2D" uid="uid://njlw3a2hed0w" path="res://pixel people/person006.png" id="3_4kuee"]
+[ext_resource type="Texture2D" uid="uid://njlw3a2hed0w" path="res://assets/textures/pixel people/person006.png" id="3_4kuee"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0rwas"]
 size = Vector2(128.246, 127.623)
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(0, -10)
 collision_layer = 67
 collision_mask = 67
 script = ExtResource("1_gfjak")
@@ -28,8 +27,8 @@ scale = Vector2(0.4, 0.4)
 shape = SubResource("RectangleShape2D_0rwas")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-1.6875, -11)
-scale = Vector2(3.47321, 3.78947)
+position = Vector2(-2.38419e-07, -0.500009)
+scale = Vector2(2.42857, 2.68421)
 texture = ExtResource("3_4kuee")
 
 [node name="Marker2D" type="Marker2D" parent="."]

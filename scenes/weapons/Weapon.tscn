@@ -9,6 +9,7 @@ script = ExtResource("1_evrmh")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 light_mask = 15
 visibility_layer = 15
-scale = Vector2(3, 3)
+position = Vector2(0, 6)
+scale = Vector2(2, 2)
 
 [node name="CooldownTimer" type="Timer" parent="."]

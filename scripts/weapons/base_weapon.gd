@@ -16,6 +16,7 @@ func setup(weapon_type: Globals.HandWeapons) -> void:
 	cooldown_timer.wait_time = weapon_data["cooldown_shot"]
 	cooldown_timer.one_shot = true
 	cooldown_timer.autostart = false
+	global_position += Vector2(-5, 3)
 
 func _physics_process(delta: float) -> void:
 	if not GameManager.is_game_active:
