@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://dbrpv0ru5wva5"]
 
 [ext_resource type="Script" uid="uid://dfv7p7e43o2sl" path="res://scenes/player/player.gd" id="1_gfjak"]
-[ext_resource type="Texture2D" uid="uid://dq8pd2oa8sx4w" path="res://assets/textures/hero.png" id="1_wr5hl"]
 [ext_resource type="PackedScene" uid="uid://cb78qepki3kcg" path="res://scenes/ui/bar/HealthBar.tscn" id="2_4kuee"]
+[ext_resource type="Texture2D" uid="uid://njlw3a2hed0w" path="res://pixel people/person006.png" id="3_4kuee"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0rwas"]
 size = Vector2(128.246, 127.623)
@@ -28,8 +28,9 @@ scale = Vector2(0.4, 0.4)
 shape = SubResource("RectangleShape2D_0rwas")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_wr5hl")
+position = Vector2(-1.6875, -11)
+scale = Vector2(3.47321, 3.78947)
+texture = ExtResource("3_4kuee")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(17, 0)

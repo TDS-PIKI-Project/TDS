@@ -1,11 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://d17tqo364my13"]
+[gd_scene load_steps=4 format=3 uid="uid://d17tqo364my13"]
 
 [ext_resource type="Script" uid="uid://b4vhw837caurx" path="res://scenes/levels/level_1.gd" id="1_ksju7"]
 [ext_resource type="PackedScene" uid="uid://bjvnlqihok5t4" path="res://scenes/ui/menu/PostGameMenu.tscn" id="2_6iamk"]
+[ext_resource type="PackedScene" uid="uid://bar5j54tqe63n" path="res://scenes/parallax/background1.tscn" id="2_nsrm0"]
 
 [node name="Level 1" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_ksju7")
+
+[node name="Background1" parent="." instance=ExtResource("2_nsrm0")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

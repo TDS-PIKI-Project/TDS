@@ -2,7 +2,7 @@ class_name TowerManager extends Node
 
 var tower_root: Node2D = null
 var sections: Array = []
-var tower_speed: float = 100
+var tower_speed: float = 170
 var player: Player
 var start_x_c: float
 
@@ -11,7 +11,7 @@ func _ready() -> void:
 	GameManager.game_started.connect(_on_game_started)
 	add_to_group("tower_manager")
 
-func build_tower(parent_node: Node2D, start_x: float = 200, start_y: float = 560) -> void:
+func build_tower(parent_node: Node2D, start_x: float = 200, start_y: float = 580) -> void:
 	tower_root = parent_node
 	start_x_c = start_x
 	

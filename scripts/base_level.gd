@@ -5,7 +5,7 @@ class_name BaseLevel extends Node2D
 @export var total_lanes: int = 5
 @export var buffer_size: int = 1
 @export var lane_height: float = 10.0
-@export var start_y: float = 500.0
+@export var start_y: float = 570.0
 @export var lane_random_offset: float = 20.0   # максимальное отклонение по Y
 
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
