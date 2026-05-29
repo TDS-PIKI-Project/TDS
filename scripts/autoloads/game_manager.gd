@@ -6,7 +6,8 @@ signal game_ended
 
 # --- CONSTANTS ---
 
-const BASE_URL = "http://46.17.99.81:8000"
+#const BASE_URL = "http://46.17.99.81:8000"
+var BASE_URL = "http://127.0.0.1:8000" 
 
 # --- VARIABLES ---
 
@@ -24,6 +25,11 @@ var floors: Array = [null, null, null]
 # --- FUNCTIONS ---
 
 func _ready():
+	if OS.has_feature("web"):
+		BASE_URL = "https://tds-ea13.onrender.com"
+	
+	print("Игра подключена к серверу: ", BASE_URL)
+	
 	add_child(save_http_client)
 	save_http_client.request_completed.connect(_on_save_completed)
 
