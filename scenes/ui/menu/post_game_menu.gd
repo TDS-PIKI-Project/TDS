@@ -16,9 +16,10 @@ func _ready() -> void:
 	retry_btn.pressed.connect(_on_retry_pressed)
 	menu_btn.pressed.connect(_on_menu_pressed)
 
-func show_game_over(final_score: int, killed_enemies: int, earned_gold: int, \
-					 survived_time_sec: float) -> void:
+func show_game_over(final_score: int, old_score: int, killed_enemies: int,\
+ 						earned_gold: int, survived_time_sec: float) -> void:
 	new_record_label.hide()
+	
 	score_label.text = "        Очки: " + str(final_score)
 	gold_label.text = "        Собрано золота: " + str(earned_gold)
 	enemies_label.text = "        Убито врагов: " + str(killed_enemies)
@@ -26,6 +27,8 @@ func show_game_over(final_score: int, killed_enemies: int, earned_gold: int, \
 	var seconds = int(survived_time_sec) % 60
 	time_label.text = "        Время выживания: %02d:%02d" % [minutes, seconds]
 	
+	if GameManager.score > old_score:
+		activate_new_record_animation()
 	show()
 
 func _on_retry_pressed() -> void:

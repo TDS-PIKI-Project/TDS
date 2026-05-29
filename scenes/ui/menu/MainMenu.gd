@@ -16,8 +16,6 @@ const LEADERBOARD_SCENE = preload(Globals.LEADERBOARD_PATH)
 @onready var high_score_label = $HighScoreLabel
 @onready var expensive_label = $ExpensiveLabel
 
-@onready var profile_http_request: HTTPRequest = HTTPRequest.new()
-
 func _ready():
 	add_to_group("main_menu")
 	
@@ -33,40 +31,12 @@ func _ready():
 	$MainLayout/ContentArea/ContentVBox/ActionArea/PlayBtn.pressed.connect(_on_play_pressed)
 	expensive_label.visible = false
 	
-	add_child(profile_http_request)
-	profile_http_request.request_completed.connect(_on_profile_loaded)
+	start()
 	
-	_fetch_profile_data()
-
-
-func _fetch_profile_data():
-	if GameManager.auth_token.is_empty():
-		print("Ошибка: Токен отсутствует!")
-		return
-		
-	var headers = [
-		"Authorization: Bearer " + GameManager.auth_token
-	]
-	profile_http_request.request(GameManager.BASE_URL + "/me", headers, HTTPClient.METHOD_GET)
-
-func _on_profile_loaded(_result, response_code, _headers, body):
-	if response_code == 200:
-		var response = JSON.parse_string(body.get_string_from_utf8())
-		if response != null:
-			GameManager.gold = response.get("gold", 100)
-			GameManager.score = response.get("score", 0)
-			
-			GameManager.floors[0] = response.get("floor_1")
-			GameManager.floors[1] = response.get("floor_2")
-			GameManager.floors[2] = response.get("floor_3")
-			
-			_load_tower_into_ui() 
-			_update_profile_ui()
-			_show_page("main")
-			
-			# $TopBar/GoldLabel.text = str(GameManager.gold)
-	else:
-		print("Ошибка загрузки профиля с сервера: ", response_code)
+func start():
+	_load_tower_into_ui() 
+	_update_profile_ui()
+	_show_page("main")
 	
 func _load_tower_into_ui():
 	if game_container.has_node("TowerAnchor"):

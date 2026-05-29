@@ -21,6 +21,7 @@ var is_game_active: bool = false
 var floors: Array = [null, null, null]
 
 @onready var save_http_client: HTTPRequest = HTTPRequest.new()
+@onready var profile_http_request: HTTPRequest = HTTPRequest.new()
 
 # --- FUNCTIONS ---
 

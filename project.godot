@@ -20,6 +20,10 @@ config/icon="res://assets/textures/icon.svg"
 Globals="*res://scripts/autoloads/globals.gd"
 GameManager="*res://scripts/autoloads/game_manager.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [input]
 
 shoot={

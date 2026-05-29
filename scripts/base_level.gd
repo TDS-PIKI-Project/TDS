@@ -19,6 +19,7 @@ var enemies_arr = []
 var statistic_labels : Node
 var gold_earned_this_run: int = 0
 var score : int = 0
+var old_score: int
 var enemies_killed_count: int = 0
 var start_time_msec: float = 0.0
 var final_survival_time: float = 0.0
@@ -33,6 +34,8 @@ func _ready():
 	tower_manager = TowerManager.new()
 	add_child(tower_manager)
 	tower_manager.build_tower(self)
+	
+	old_score = GameManager.score
 	
 	statistic_labels = load(Globals.STATISTICS_PATH).instantiate()
 	add_child(statistic_labels)
@@ -116,8 +119,6 @@ func _on_score_submitted(result: int, response_code: int, headers: PackedStringA
 		if parse_err == OK:
 			var response_data = json.get_data()
 			print("Счет успешно обновлен!")
-			if response_data.get("new_record") == true:
-				post_game_menu.activate_new_record_animation()
 	else:
 		print("Ошибка сервера. Код ответа: ", response_code)
 		print("Детали: ", body.get_string_from_utf8())
@@ -135,8 +136,15 @@ func _process(delta: float) -> void:
 		var current_time_msec = Time.get_ticks_msec()
 		final_survival_time = (current_time_msec - start_time_msec) / 1000.0
 		
+		if score > old_score:
+			print("BEATEN!!!!")
+			GameManager.score = score
+		else:
+			print("not beaten...")
+		print(old_score, score, GameManager.score)
+		
+		post_game_menu.show_game_over(score, old_score, enemies_killed_count, gold_earned_this_run, final_survival_time)
 		GameManager.save_progress_to_server()
-		post_game_menu.show_game_over(score, enemies_killed_count, gold_earned_this_run, final_survival_time)
 	
 	if player == null or player._is_dead:
 		return
