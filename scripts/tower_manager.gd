@@ -11,7 +11,7 @@ func _ready() -> void:
 	GameManager.game_started.connect(_on_game_started)
 	add_to_group("tower_manager")
 
-func build_tower(parent_node: Node2D, start_x: float = 200, start_y: float = 580) -> void:
+func build_tower(parent_node: Node2D, start_x: float = 200, start_y: float = 585) -> void:
 	tower_root = parent_node
 	start_x_c = start_x
 	

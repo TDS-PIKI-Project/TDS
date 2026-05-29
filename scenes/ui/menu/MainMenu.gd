@@ -16,7 +16,6 @@ const LEADERBOARD_SCENE = preload(Globals.LEADERBOARD_PATH)
 @onready var high_score_label = $HighScoreLabel
 @onready var expensive_label = $ExpensiveLabel
 
-const BASE_URL = "http://127.0.0.1:8000"
 @onready var profile_http_request: HTTPRequest = HTTPRequest.new()
 
 func _ready():
@@ -48,7 +47,7 @@ func _fetch_profile_data():
 	var headers = [
 		"Authorization: Bearer " + GameManager.auth_token
 	]
-	profile_http_request.request(BASE_URL + "/me", headers, HTTPClient.METHOD_GET)
+	profile_http_request.request(GameManager.BASE_URL + "/me", headers, HTTPClient.METHOD_GET)
 
 func _on_profile_loaded(_result, response_code, _headers, body):
 	if response_code == 200:

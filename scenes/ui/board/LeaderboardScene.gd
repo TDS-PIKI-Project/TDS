@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-const SERVER_URL = "http://127.0.0.1:8000"
-
 @onready var entries_vbox = $Panel/MarginContainer/VBoxContainer/ScrollContainer/EntriesVBox
 @onready var http_request = $HTTPRequest
 @onready var close_btn = $Panel/MarginContainer/VBoxContainer/CloseBtn
@@ -16,7 +14,7 @@ func _ready():
 
 func load_leaderboard():
 	var error = http_request.request(
-		SERVER_URL + "/leaderboard"
+		GameManager.BASE_URL + "/leaderboard"
 	)
 
 	if error != OK:
@@ -65,6 +63,8 @@ func update_ui(players):
 
 		var name_label = Label.new()
 		name_label.text = player["username"]
+		if name_label.text == GameManager.username:
+			name_label.modulate = Color(0.4, 1.0, 0.2)
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 		var score_label = Label.new()

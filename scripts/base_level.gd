@@ -24,7 +24,6 @@ var start_time_msec: float = 0.0
 var final_survival_time: float = 0.0
 
 
-const BASE_URL = "http://127.0.0.1:8000/submit_score"
 @onready var http_request: HTTPRequest = HTTPRequest.new()
 
 func _ready():
@@ -104,7 +103,8 @@ func send_score_to_server(score_value: int) -> void:
 		"Content-Type: application/json",
 		"Authorization: Bearer " + GameManager.auth_token
 	]
-	var error = http_request.request(BASE_URL, headers, HTTPClient.METHOD_POST, body)
+	var error = http_request.request(GameManager.BASE_URL + "/submit_score", \
+										headers, HTTPClient.METHOD_POST, body)
 	if error != OK:
 		print("Ошибка инициализации запроса: ", error)
 
