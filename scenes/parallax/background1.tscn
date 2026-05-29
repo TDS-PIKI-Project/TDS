@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=3 uid="uid://bar5j54tqe63n"]
+
+[ext_resource type="Script" uid="uid://6mo6b6hxtegy" path="res://scenes/parallax/background_1.gd" id="1_duucv"]
+[ext_resource type="Texture2D" uid="uid://dnlm7k3pm24mq" path="res://Nature Landscapes Free Pixel Art/nature_1/1.png" id="1_grmyh"]
+[ext_resource type="Texture2D" uid="uid://bun1w3m1qorkv" path="res://Nature Landscapes Free Pixel Art/nature_1/3.png" id="2_sw82j"]
+[ext_resource type="Texture2D" uid="uid://b0v0f1h05vgl" path="res://Nature Landscapes Free Pixel Art/nature_1/2.png" id="3_l7jqn"]
+[ext_resource type="Texture2D" uid="uid://b0qfkwi5x2tne" path="res://Nature Landscapes Free Pixel Art/nature_1/5.png" id="4_cytik"]
+[ext_resource type="Texture2D" uid="uid://d1p1wpeas4ph5" path="res://Nature Landscapes Free Pixel Art/nature_1/6.png" id="5_ouk0h"]
+[ext_resource type="Texture2D" uid="uid://dfn66cnr5j2w8" path="res://Nature Landscapes Free Pixel Art/nature_1/7.png" id="6_rj6ll"]
+[ext_resource type="Texture2D" uid="uid://cw7ahpdh5rqfr" path="res://Nature Landscapes Free Pixel Art/nature_1/8.png" id="7_twpju"]
+[ext_resource type="Texture2D" uid="uid://bkwlnjea31rxn" path="res://Nature Landscapes Free Pixel Art/nature_1/9.png" id="9_565f8"]
+
+[node name="Background1" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_duucv")
+
+[node name="Sky" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0, 0)
+repeat_size = Vector2(576, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Sky"]
+texture = ExtResource("1_grmyh")
+centered = false
+
+[node name="Mountains" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.3, 0.3)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-10, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Mountains"]
+texture = ExtResource("2_sw82j")
+centered = false
+
+[node name="Clouds" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-15, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Clouds"]
+texture = ExtResource("3_l7jqn")
+centered = false
+
+[node name="Bushes" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.4, 0.4)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-20, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Bushes"]
+texture = ExtResource("4_cytik")
+centered = false
+
+[node name="Tree1" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.5, 0.5)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-25, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Tree1"]
+texture = ExtResource("5_ouk0h")
+centered = false
+
+[node name="Tree2" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.6, 0.6)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-30, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Tree2"]
+texture = ExtResource("6_rj6ll")
+centered = false
+
+[node name="Grass" type="Parallax2D" parent="."]
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-35, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Grass"]
+texture = ExtResource("7_twpju")
+centered = false
+
+[node name="Road" type="Parallax2D" parent="."]
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-100, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Road"]
+texture = ExtResource("9_565f8")
+centered = false
