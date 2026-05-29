@@ -6,7 +6,7 @@ signal game_ended
 
 # --- CONSTANTS ---
 
-const BASE_URL = "http://127.0.0.1:8000"
+const BASE_URL = "http://46.17.99.81:8000"
 
 # --- VARIABLES ---
 
